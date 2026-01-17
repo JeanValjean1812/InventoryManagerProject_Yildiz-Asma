@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/InventoryManagerProject_Yildiz-Asma/static/css/main.6e0d2241.css",
-    "main.js": "/InventoryManagerProject_Yildiz-Asma/static/js/main.040e9f8b.js",
-    "index.html": "/InventoryManagerProject_Yildiz-Asma/index.html",
-    "main.6e0d2241.css.map": "/InventoryManagerProject_Yildiz-Asma/static/css/main.6e0d2241.css.map",
-    "main.040e9f8b.js.map": "/InventoryManagerProject_Yildiz-Asma/static/js/main.040e9f8b.js.map"
+    "main.css": "/static/css/main.6e0d2241.css",
+    "main.js": "/static/js/main.9fd22551.js",
+    "index.html": "/index.html",
+    "main.6e0d2241.css.map": "/static/css/main.6e0d2241.css.map",
+    "main.9fd22551.js.map": "/static/js/main.9fd22551.js.map"
   },
   "entrypoints": [
     "static/css/main.6e0d2241.css",
-    "static/js/main.040e9f8b.js"
+    "static/js/main.9fd22551.js"
   ]
 }

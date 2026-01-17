@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const API = 'https://inventorymanagerproject-yildiz-asma.onrender.com/api';
+const API = '/api';
 
 function App() {
   const [items, setItems] = useState([]);

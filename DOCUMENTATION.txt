@@ -1,0 +1,383 @@
+INVENTORY MANAGEMENT APP - DOCUMENTATION
+=========================================
+
+This is a simple inventory app to track items, their quantities, and prices.
+
+
+WHAT IS THIS APP?
+-----------------
+A web app that works like a mobile app where you can:
+- Add items to your inventory
+- See how many you have and their price
+- Increase or decrease quantities
+- Edit item details
+- Delete items
+- Search for items
+- See total value of all your stuff
+
+
+BASIC TERMS EXPLAINED
+---------------------
+
+What is a Web App?
+A website that works like an app. You open it in a browser (Chrome, Firefox, etc.) instead of downloading from an app store.
+
+What is Frontend?
+The part you see and click on. The buttons, text boxes, colors - everything visual. We use React to build this. In our project, this is the "frontend" folder.
+
+What is Backend?
+The part you dont see. It runs on a server and handles saving/loading data. We use Node.js and Express for this. In our project, this is the "backend" folder.
+
+What is a Server?
+A computer (or program) that waits for requests and sends back responses. When you open the app, your browser asks the server for data, and the server sends it back.
+
+What is a Database?
+Where we store all the items permanently. Even if you close the browser, your data is saved. We use SQLite which saves everything in a single file called "inventory.db".
+
+What is an API?
+API stands for Application Programming Interface. Its basically how the frontend talks to the backend. Think of it like a waiter in a restaurant:
+- You (frontend) tell the waiter what you want
+- Waiter (API) takes your order to the kitchen
+- Kitchen (backend) prepares it
+- Waiter brings it back to you
+
+In code terms: when you click "Add Item", the frontend sends a message to the backend through the API saying "hey, save this new item". The backend saves it and sends back "ok, done!".
+
+What is React?
+A tool made by Facebook to build user interfaces (the visual stuff). It makes it easy to update the screen when data changes without reloading the whole page. We use it because its popular and has lots of tutorials online.
+
+What is Node.js?
+Lets you run JavaScript code outside a browser. Normally JavaScript only runs in browsers, but Node.js lets it run on a server. We use it because we can use the same language (JavaScript) for both frontend and backend.
+
+What is Express?
+A simple tool that makes it easy to create a web server with Node.js. Without it, creating API endpoints would be way harder. Its like a shortcut for making servers.
+
+What is SQLite?
+A super simple database that stores everything in one file (inventory.db). No complicated setup needed. Other databases like MySQL need separate installation and configuration, but SQLite just works.
+
+What is npm?
+npm stands for Node Package Manager. Its a tool that downloads code libraries (packages) that other people wrote so you dont have to write everything from scratch. When you run "npm install", it downloads all the packages listed in package.json.
+
+What is package.json?
+A file that lists all the packages your project needs. Its like a shopping list - npm reads this file and downloads everything on the list.
+
+What is node_modules?
+A folder where npm puts all the downloaded packages. Theres thousands of files in there because each package depends on other packages, which depend on more packages. You never need to look inside it or edit it. If you delete it, just run "npm install" to get it back.
+
+What is JSON?
+JSON stands for JavaScript Object Notation. Its a way to format data that both humans and computers can read. Looks like this:
+{"name": "Apple", "price": 1.50, "quantity": 10}
+
+What is HTTP?
+The language browsers use to talk to servers. When you type a website address, your browser sends an HTTP request to that server.
+
+What are HTTP Methods?
+Different types of requests:
+- GET = give me data (like "show me all items")
+- POST = save this new data (like "add this new item")
+- PUT = update existing data (like "change this items quantity")
+- DELETE = remove data (like "delete this item")
+
+What is localhost?
+Your own computer acting as a server. localhost:5000 means "my computer, door number 5000". Different programs use different port numbers so they dont interfere with each other.
+
+What is a Port?
+Like a door number for your computer. Each program uses a different port. Our backend uses port 5000, frontend uses port 3000.
+
+
+PROJECT STRUCTURE
+-----------------
+
+MobileAppProgrammingProject/
+|
+|-- DOCUMENTATION.txt     <-- this file youre reading
+|
+|-- backend/              <-- server-side code
+|   |-- package.json      <-- lists backend packages needed
+|   |-- node_modules/     <-- downloaded packages (dont touch)
+|   |-- server.js         <-- THE MAIN BACKEND CODE
+|   |-- inventory.db      <-- database file (created when you run app)
+|
+|-- frontend/             <-- client-side code  
+    |-- package.json      <-- lists frontend packages needed
+    |-- node_modules/     <-- downloaded packages (dont touch)
+    |-- public/
+    |   |-- index.html    <-- basic HTML page that loads React
+    |-- src/
+        |-- index.js      <-- starts React
+        |-- App.js        <-- THE MAIN FRONTEND CODE
+        |-- App.css       <-- all the visual styling
+
+
+The only files you really need to understand are:
+1. backend/server.js - handles saving and loading data
+2. frontend/src/App.js - handles what you see on screen
+3. frontend/src/App.css - makes it look nice
+
+
+HOW TO RUN THE APP
+------------------
+
+Step 1: Make sure you have Node.js installed
+- Download from https://nodejs.org (get the LTS version)
+- Install it like any normal program
+
+Step 2: Open two terminal/command prompt windows
+- On Windows: search for "cmd" or "Command Prompt"
+- You need two separate windows because both servers need to run at same time
+
+Step 3: Start the Backend (in first terminal)
+- Type: cd backend
+- Type: npm install (only first time, downloads packages)
+- Type: npm start
+- You should see "Server running on http://localhost:5000"
+- Keep this window open!
+
+Step 4: Start the Frontend (in second terminal)
+- Type: cd frontend  
+- Type: npm install (only first time, downloads packages)
+- Type: npm start
+- A browser window should open automatically
+- If not, go to http://localhost:3000
+
+Step 5: Use the app!
+- Add items using the form
+- Click +/- to change quantities
+- Click Edit to modify items
+- Click Delete to remove items
+- Use search box to filter items
+
+
+HOW THE BACKEND CODE WORKS (server.js)
+--------------------------------------
+
+The backend is like a waiter that takes orders and brings food. Here's what each part does:
+
+IMPORTS (top of file):
+- express: the framework for creating servers
+- cors: allows frontend to talk to backend (they're on different ports)
+- sql.js: the database library
+- fs: for reading/writing files
+- path: for working with file paths
+
+SETUP:
+- Creates an Express app
+- Sets port to 5000
+- Enables CORS and JSON parsing
+
+DATABASE:
+- Creates or loads inventory.db file
+- Creates "items" table if it doesnt exist
+- Table has columns: id, name, quantity, price
+
+API ENDPOINTS (the URLs frontend can call):
+
+GET /api/items
+- Returns all items from database
+- Can filter by search term
+- Frontend calls this to show the item list
+
+POST /api/items
+- Saves a new item to database
+- Receives name, quantity, price from frontend
+- Frontend calls this when you click "Add"
+
+PUT /api/items/:id
+- Updates an existing item
+- The :id part is the item's ID number
+- Frontend calls this when you click "Update" or +/-
+
+DELETE /api/items/:id
+- Removes an item from database
+- Frontend calls this when you click "Delete"
+
+GET /api/stats
+- Returns total count and value of all items
+- Frontend calls this to show the total value at top
+
+
+HOW THE FRONTEND CODE WORKS (App.js)
+------------------------------------
+
+The frontend is what you see and interact with. Here's what each part does:
+
+IMPORTS:
+- React and hooks (useState, useEffect)
+- App.css for styling
+
+STATE VARIABLES (using useState):
+State is data that can change. When state changes, React updates the screen.
+- items: the list of all inventory items
+- totalValue: sum of all items value
+- search: what user typed in search box
+- error: any error message to show
+- name, quantity, price: form input values
+- editId: which item is being edited (null if none)
+
+useEffect:
+Runs code when the page first loads. We use it to fetch items from server when app starts.
+
+FUNCTIONS:
+
+loadItems():
+- Calls GET /api/items on backend
+- Saves the returned items to state
+- Screen updates automatically
+
+loadStats():
+- Calls GET /api/stats on backend
+- Saves total value to state
+
+handleSubmit():
+- Runs when you click Add or Update button
+- If editId exists, calls PUT to update
+- If no editId, calls POST to add new
+- Then reloads items to show changes
+
+handleDelete():
+- Asks "are you sure?"
+- Calls DELETE on backend
+- Reloads items
+
+handleEdit():
+- Fills form with items current values
+- Sets editId so we know were editing
+
+changeQuantity():
+- Called when you click + or - buttons
+- Calls PUT with new quantity
+- Reloads items
+
+THE RETURN STATEMENT:
+This is the HTML-like code that creates what you see:
+- Header with title
+- Stats box showing total value
+- Error message (if any)
+- Form for adding/editing
+- Search box
+- List of item cards
+
+
+HOW THE STYLING WORKS (App.css)
+-------------------------------
+
+CSS controls how things look. Basic concepts:
+
+Selectors:
+- .app means "element with class app"
+- h1 means "all h1 elements"
+
+Properties:
+- background: color behind element
+- color: text color
+- padding: space inside element
+- margin: space outside element
+- border-radius: rounded corners
+
+The CSS is mobile-first, meaning its designed for phones (max-width 500px).
+
+
+HOW DATA FLOWS THROUGH THE APP
+------------------------------
+
+Example: Adding a new item
+
+1. User types "Apple", "10", "1.50" in form
+2. User clicks "Add" button
+3. handleSubmit() function runs
+4. Function sends POST request to backend with the data
+5. Backend receives request at POST /api/items
+6. Backend saves data to SQLite database
+7. Backend sends back "success" response
+8. Frontend receives response
+9. Frontend calls loadItems() to refresh the list
+10. loadItems() sends GET request to backend
+11. Backend returns all items from database
+12. Frontend saves items to state
+13. React sees state changed, redraws the screen
+14. User sees Apple in the list
+
+
+HOW TO DEPLOY (PUT IT ONLINE)
+-----------------------------
+
+Using Render.com (Free):
+
+1. Create account at github.com
+2. Upload your project files to GitHub (without node_modules folders)
+3. Create account at render.com (sign in with GitHub)
+
+4. Deploy Backend:
+   - Click "New" then "Web Service"
+   - Connect your GitHub repository
+   - Set Root Directory to: backend
+   - Set Build Command to: npm install
+   - Set Start Command to: npm start
+   - Click Create
+   - Wait for it to deploy
+   - Copy the URL it gives you (like https://something.onrender.com)
+
+5. Deploy Frontend:
+   - First, edit App.js and change the API line to your backend URL
+   - Change: const API = 'http://localhost:5000/api'
+   - To: const API = 'https://your-backend-url.onrender.com/api'
+   - Push this change to GitHub
+   - In Render, create another Web Service
+   - Set Root Directory to: frontend
+   - Set Build Command to: npm install && npm run build
+   - Set Start Command to: npx serve -s build
+   - Click Create
+
+6. Your app is now online at the frontend URL!
+
+Note: Free tier sleeps after 15 mins of no activity. First visit after sleeping takes about 30 seconds to wake up.
+
+
+COMMON PROBLEMS AND SOLUTIONS
+-----------------------------
+
+"Cannot connect to server" or "Network error"
+- Make sure backend is running (npm start in backend folder)
+- Check that its on port 5000
+
+"npm not found" or "node not found"  
+- Install Node.js from nodejs.org
+- Restart your terminal after installing
+
+"Port already in use"
+- Another program is using that port
+- Close other terminals or restart computer
+
+"Module not found"
+- Run npm install in that folder
+
+Items disappear after restart
+- Normal for deployed free tier (database resets)
+- Locally, check if inventory.db exists in backend folder
+
+Buttons dont work
+- Open browser console (F12) to see errors
+- Make sure both frontend and backend are running
+
+
+SUMMARY
+-------
+
+This app has two main parts:
+
+BACKEND (server.js):
+- Runs on port 5000
+- Has API endpoints that frontend calls
+- Saves data to SQLite database
+- Like a waiter + kitchen
+
+FRONTEND (App.js + App.css):
+- Runs on port 3000
+- Shows the user interface
+- Calls backend API to get/save data
+- Like the restaurant dining area
+
+They communicate through HTTP requests (GET, POST, PUT, DELETE).
+
+The whole flow:
+User clicks something -> Frontend sends request -> Backend processes it -> Database stores it -> Backend responds -> Frontend updates screen

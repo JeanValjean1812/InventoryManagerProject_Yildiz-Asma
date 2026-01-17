@@ -298,35 +298,177 @@ Example: Adding a new item
 14. User sees Apple in the list
 
 
-HOW TO DEPLOY (PUT IT ONLINE)
+HOW TO DEPLOY AS A MOBILE APP (STEP BY STEP)
+============================================
+
+This guide explains how to put your app online so you can open it on your phone
+like a real mobile app. We will use free hosting services.
+
+OVERVIEW:
+- We need to host the backend (server) somewhere online
+- We need to host the frontend (website) somewhere online  
+- Then you can open it on your phone and add it to your home screen
+
+-------------------------------------------------------------------------
+STEP 1: CREATE A GITHUB ACCOUNT
+-------------------------------------------------------------------------
+1. Go to github.com
+2. Click "Sign Up" and create an account
+3. Verify your email
+
+-------------------------------------------------------------------------
+STEP 2: UPLOAD YOUR PROJECT TO GITHUB
+-------------------------------------------------------------------------
+1. Download GitHub Desktop from desktop.github.com
+2. Install it and sign in with your GitHub account
+3. Click File -> Add Local Repository
+4. Select your project folder (MobileAppProgrammingProject)
+5. It will ask to create a repository - click "Create Repository"
+6. Click "Publish Repository" at the top
+7. Uncheck "Keep this code private" (make it public - its free)
+8. Click "Publish Repository"
+
+Your code is now on GitHub!
+
+-------------------------------------------------------------------------
+STEP 3: CREATE RENDER ACCOUNT
+-------------------------------------------------------------------------
+1. Go to render.com
+2. Click "Get Started for Free"
+3. Click "Sign up with GitHub" (easiest)
+4. Authorize Render to access your GitHub
+
+-------------------------------------------------------------------------
+STEP 4: DEPLOY BACKEND ON RENDER
+-------------------------------------------------------------------------
+1. On Render dashboard, click "New +" button
+2. Select "Web Service"
+3. Find your repository in the list and click "Connect"
+4. Fill in these settings:
+
+   Name: inventory-backend (or whatever you want)
+   Region: Pick closest to you
+   Branch: main
+   Root Directory: backend
+   Runtime: Node
+   Build Command: npm install
+   Start Command: node server.js
+   Instance Type: Free
+
+5. Click "Create Web Service"
+6. Wait 3-5 minutes for it to build and deploy
+7. Copy your URL (looks like: https://inventory-backend-xxxx.onrender.com)
+
+-------------------------------------------------------------------------
+STEP 5: UPDATE YOUR CODE WITH THE BACKEND URL
+-------------------------------------------------------------------------
+Open frontend/src/App.js and find this line near the top:
+   const API = 'http://localhost:5000/api';
+
+Change it to your Render URL (the one you copied in step 4):
+   const API = 'https://inventory-backend-xxxx.onrender.com/api';
+
+(Use YOUR actual URL, not this example!)
+
+Save the file.
+
+Then push the changes to GitHub using GitHub Desktop:
+1. Open GitHub Desktop
+2. You will see the changed file listed
+3. Type "update api url" in the summary box (bottom left)
+4. Click "Commit to main"
+5. Click "Push origin" at the top
+
+-------------------------------------------------------------------------
+STEP 6: DEPLOY FRONTEND ON RENDER
+-------------------------------------------------------------------------
+1. Go back to render.com dashboard
+2. Click "New +" button again
+3. Select "Web Service"
+4. Select the same repository
+5. Fill in these settings:
+
+   Name: inventory-frontend
+   Region: Same as backend
+   Branch: main
+   Root Directory: frontend
+   Runtime: Node
+   Build Command: npm install && npm run build
+   Start Command: npx serve -s build
+   Instance Type: Free
+
+6. Click "Create Web Service"
+7. Wait 3-5 minutes for it to build
+
+-------------------------------------------------------------------------
+STEP 7: TEST YOUR APP
+-------------------------------------------------------------------------
+1. Render will give you a URL like: https://inventory-frontend-xxxx.onrender.com
+2. Open this URL in your browser
+3. Your app should appear and work!
+
+Note: Free tier "sleeps" after 15 minutes of no use. First visit after sleeping
+takes 30-60 seconds to load. This is normal and fine for a university project.
+
+-------------------------------------------------------------------------
+STEP 8: ADD TO PHONE HOME SCREEN (MAKE IT FEEL LIKE A MOBILE APP)
+-------------------------------------------------------------------------
+On your phone, open the frontend URL in your browser:
+
+iPhone (Safari):
+1. Open the URL in Safari
+2. Tap the Share button (square with arrow pointing up)
+3. Scroll down and tap "Add to Home Screen"
+4. Give it a name and tap "Add"
+
+Android (Chrome):
+1. Open the URL in Chrome
+2. Tap the 3-dot menu in top right corner
+3. Tap "Add to Home screen" or "Install app"
+4. Tap "Add"
+
+Now you have an icon on your phone that opens your app like a real app!
+
+
+TROUBLESHOOTING DEPLOYMENT
+--------------------------
+
+"Build failed" on Render:
+- Check that all files are pushed to GitHub
+- Look at the build logs for specific error messages
+- Make sure package.json exists in both frontend and backend folders
+
+"Cannot GET /" error on backend URL:
+- This is normal! The backend only responds to /api/items etc
+- Try going to your-backend-url.onrender.com/api/items
+- If you see JSON data, its working
+
+App loads but shows "Cant connect to server":
+- Backend might be sleeping, wait 30-60 seconds and refresh
+- Check that the API URL in App.js is correct
+- Make sure you pushed the changes and Render redeployed
+
+Changes not showing up:
+- Make sure you committed AND pushed in GitHub Desktop
+- On Render, you can click "Manual Deploy" to force a redeploy
+
+"npm command not found":
+- Install Node.js from nodejs.org
+- Restart your terminal after installing
+
+
+WHAT YOU WILL HAVE AT THE END
 -----------------------------
+- Backend URL: https://inventory-backend-xxxx.onrender.com
+  (This runs your server and database)
 
-Using Render.com (Free):
+- Frontend URL: https://inventory-frontend-xxxx.onrender.com
+  (This is what you open on your phone)
 
-1. Create account at github.com
-2. Upload your project files to GitHub (without node_modules folders)
-3. Create account at render.com (sign in with GitHub)
+- A home screen icon on your phone that opens the app
 
-4. Deploy Backend:
-   - Click "New" then "Web Service"
-   - Connect your GitHub repository
-   - Set Root Directory to: backend
-   - Set Build Command to: npm install
-   - Set Start Command to: npm start
-   - Click Create
-   - Wait for it to deploy
-   - Copy the URL it gives you (like https://something.onrender.com)
+Thats it! You now have a working mobile app!
 
-5. Deploy Frontend:
-   - First, edit App.js and change the API line to your backend URL
-   - Change: const API = 'http://localhost:5000/api'
-   - To: const API = 'https://your-backend-url.onrender.com/api'
-   - Push this change to GitHub
-   - In Render, create another Web Service
-   - Set Root Directory to: frontend
-   - Set Build Command to: npm install && npm run build
-   - Set Start Command to: npx serve -s build
-   - Click Create
 
 6. Your app is now online at the frontend URL!
 

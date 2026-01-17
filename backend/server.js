@@ -151,12 +151,6 @@ app.get('/api/stats', (req, res) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-});
-
 initDB().then(() => {
   app.listen(PORT, () => {
     console.log('Server running on http://localhost:' + PORT);

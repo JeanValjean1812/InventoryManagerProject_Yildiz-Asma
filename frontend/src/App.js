@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const API = '/api';
+const API = 'http://localhost:5000/api';
 
 function App() {
   const [items, setItems] = useState([]);
